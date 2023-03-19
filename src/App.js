@@ -1,41 +1,53 @@
 import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import { ChakraProvider, Box, theme } from '@chakra-ui/react';
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import HomePage from './components/home';
+import CoursePage from './components/courses';
+import Navbar from './components/shared/Navbar';
+import Footer from './components/shared/Footer';
+import MyCourses from './components/courses/MyCourses';
+import CourseDetailsLayout from './components/courses/CourseDetailsLayout';
+import Chapter from './components/courses/Chapter';
+import CourseDetails from './components/courses/CourseDetails';
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
+    <Router>
+      <ChakraProvider theme={theme}>
+        <Box
+          px={{
+            base: '2',
+            md: '4',
+          }}
+        >
+          <Navbar />
+
+          <Switch>
+            <Route path="/" exact>
+              <HomePage />
+            </Route>
+
+            <Route path="/courses" exact>
+              <CoursePage />
+            </Route>
+            <Route path="/my-courses" exact>
+              <MyCourses />
+            </Route>
+
+            <Route path="/my-courses/read/:id" exact>
+              <CourseDetails />
+            </Route>
+
+            <Route path="/my-courses/read/:id/:section/:chapter">
+              <Chapter />
+            </Route>
+          </Switch>
+
+          <Footer />
+        </Box>
+      </ChakraProvider>
+    </Router>
   );
 }
 

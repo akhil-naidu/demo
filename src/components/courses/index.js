@@ -1,10 +1,26 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Center, CircularProgress } from '@chakra-ui/react';
 import { ProductCard } from './ProductCard';
-import { products } from './_data';
+// import { products } from './_data';
 import { ProductGrid } from './ProductGrid';
+import { useQuery } from 'react-query';
+import { getAllCoursesData } from '../../queries/courses';
 
 const CoursePage = () => {
+  const {
+    status,
+    data: products,
+    error,
+    isFetching,
+    isSuccess,
+  } = useQuery('BlogData', async () => await getAllCoursesData());
+
+  if (isFetching && !products)
+    return (
+      <Center>
+        <CircularProgress isIndeterminate color="purple.300" />
+      </Center>
+    );
   return (
     <Box
       maxW="7xl"
